@@ -1,16 +1,14 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity reg is
-  generic (
-    width  :     positive := 8);
+entity intrsuction_reg is
   port (
     clk    : in  std_logic;
     rst    : in  std_logic;
     en   : in  std_logic;
-    input  : in  std_logic_vector(width-1 downto 0);
-    output : out std_logic_vector(width-1 downto 0));
-end reg;
+    input  : in  std_logic_vector(32 downto 0);
+    31_26 : out std_logic_vector(width-1 downto 0));
+end instruction reg;
 
 architecture BHV of reg is
 begin
@@ -24,7 +22,7 @@ begin
       
 	  if (en = '1') then
         output <= input;
-    end if;
+      end if;
     
 	end if;
   end process;
