@@ -137,9 +137,10 @@ begin
 		
 		when C_SLTU		=> --$s1=1 if $s2 < $s3 else $s1=0
 		
-		when C_MFHI		=> --$s1= HI
+		--Don't think the alu handles these next two
+		--when C_MFHI		=> --$s1= HI
 		
-		when C_MFLO		=> --$s1= LO
+		--when C_MFLO		=> --$s1= LO
 		
 		when C_LW		=> --$s1 = RAM[$s2+offset]
 		
