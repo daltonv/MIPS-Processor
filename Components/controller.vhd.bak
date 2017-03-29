@@ -23,6 +23,6 @@ entity controller is
 		ALUSrcB : out std_logic;
 		ALUSrcA : out std_logic;
 		RegWrite : out std_logic;
-		RegDst : out std_logic
+		RegDst : out std_logic;
 	);
 end controller;

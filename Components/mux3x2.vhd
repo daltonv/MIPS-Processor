@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity mux3x2 is
 	generic (
@@ -19,11 +20,11 @@ begin
   process(in1, in2, sel)
   begin
   
-    if (unsigned(sel) = unsigned(0)) then
+    if (unsigned(sel) = 0) then
       output <= in1;
-    elsif (unsigned(sel) = unsigned(1)) then
+    elsif (unsigned(sel) = 1) then
       output <= in2;
-    elsif (unsigned(sel) = unsigned(2)) then
+    elsif (unsigned(sel) = 2) then
       output <= in3;
     end if;
 	

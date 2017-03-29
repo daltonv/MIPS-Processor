@@ -44,6 +44,7 @@ architecture BHV of alu is
 	constant C_J		: std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(29,5));
 	constant C_JAL		: std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(30,5));
 	constant C_JR		: std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(31,5));
+	constant C_HALT		: std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(32,5));
 
 begin
 
@@ -69,7 +70,7 @@ begin
 			result_HI <= std_logic_vector(arith_result(WIDTH*2-1 downto WIDTH));
 		
 		when C_MULT 	=> --$LO= $s * $t
-			arith_result := resize(unsigned(input1),result_LO'length)*resize(unsigned(input2),result_LO'length);
+			arith_result := resize(unsigned(input1),arith_result'length)*resize(unsigned(input2),arith_result'length);
 			result_LO <= std_logic_vector(arith_result(WIDTH-1 downto 0));
 			result_HI <= std_logic_vector(arith_result(WIDTH*2-1 downto WIDTH));
 		
@@ -89,16 +90,16 @@ begin
 			result_LO <= std_logic_vector(unsigned(input1) sll to_integer(unsigned(input2)));
 
 		when C_SRA  	=>
-			--result_LO <= input1 sra 2;
+			result_LO <= to_bitvector(input1) sra to_integer(unsigned(input2));
 
 		when C_SLT  	=> --$s1=1 if $s2 < $s3 else $s1=0
 			if(signed(input1) < signed(input2)) then
-				result_LO <= std_logic_vector(to_unsigned(1,result_LO'length));
+				result_LO <= std_logic_vector(1);
 			end if;
 		
 		when C_SLTU		=> --$s1=1 if $s2 < $s3 else $s1=0
 			if(unsigned(input1) < unsigned(input2)) then
-				result_LO <= std_logic_vector(to_unsigned(1,result_LO'length));
+				result_LO <= std_logic_vector(1);
 			end if;
 		
 		--Don't think the alu handles these next two
@@ -113,49 +114,46 @@ begin
 		when C_BEQ		=> --if $s1=$s2, PC += TARGET
 			if(unsigned(input1) = unsigned(input2)) then
 				branch_taken <= '1';
-				--result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
+				result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
 			end if;
 		
 		when C_BNE		=> --if $s1/=$s2, PC += TARGET
 			if(unsigned(input1) /= unsigned(input2)) then
 				branch_taken <= '1';
-				--result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
+				result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
 			end if;
 		
 		when C_BLEZ		=> --if $s1 <= 0, PC += TARGET
 			if(signed(input1) <= 0) then
 				branch_taken <= '1';
-				--result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
+				result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
 			end if;
 		
 		when C_BGTZ		=> --if $s1 > 0, PC += TARGET
 			if(signed(input1) > 0) then
 				branch_taken <= '1';
-				--result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
+				result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
 			end if;
 		
 		when C_BLTZ		=> --if $s1 < 0, PC += TARGET
 			if(signed(input1) < 0) then
 				branch_taken <= '1';
-				--result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
+				result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
 			end if;
 		
 		when C_BGEZ		=> --if $s1 >= 0, PC += TARGET
 			if(signed(input1) >= 0) then
 				branch_taken <= '1';
-				--result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
+				result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
 			end if;
 		
 		when C_J		=> --PC = TARGET
 			result_LO <= input2;
-		
 		when C_JAL		=> --$ra = PC+8 and PC = TARGET 
 			result_LO <= input2;
-		
 		when C_JR		=> --PC = $ra
 			result_LO <= input2;
-		
-		when others => null;
+		when C_HALT		=>
 
 	end case;
 

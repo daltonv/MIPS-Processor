@@ -35,11 +35,11 @@ begin
 
 	process(clk, input1, input2, hold_out)
 	begin
-		if(unsigned(address) = to_unsigned(65528,address'length)) then
-			data_out <= input1;
-		elsif(unsigned(address) = to_unsigned(65532,address'length) AND wren='0') then
-			data_out <= input2;
-		elsif(unsigned(address) = to_unsigned(65532,address'length) AND wren='1') then
+		if(address = "0xFFF8") then
+			data_out <= input1
+		elsif(address = "0xFFFC" AND wren='0') then
+			data_out <= input2
+		elsif(address = "0xFFFC" AND wren='1') then
 			hold_in <= input2;
 		else 
 			data_out <= hold_out;
