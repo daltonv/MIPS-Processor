@@ -9,8 +9,8 @@ entity datapath is
 	port (
 		clk	: in std_logic;
 		rst : in std_logic;
-		input1 : in std_logic_vector(WIDTH-1 downto 0);
-		input2 : in std_logic_vector(WIDTH-1 downto 0);
+		input1 : in std_logic_vector(9 downto 0);
+		input2 : in std_logic_vector(9 downto 0);
 		input1_en : in std_logic;
 		input2_en : in std_logic;
 		output : out std_logic_vector(WIDTH-1 downto 0);
