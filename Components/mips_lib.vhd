@@ -1,32 +1,41 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 package MIPS_LIB is
-  constant ADDU   : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(0,5));
-  constant ADDI   : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(9,5));
-  constant SUB    : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(2,5));
-  constant MULT   : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(4,5));
-  constant AND    : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(6,5));
-  constant OR     : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(8,5));
-  constant XOR    : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(10,5));
-  constant SRL    : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(12,5));
-  constant SLL    : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(13,5));
-  constant SRA    : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(14,5));
-  constant SLT    : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(15,5));
-  constant SLTU   : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(18,5));
-  constant MFHI   : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(19,5));
-  constant MFLO   : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(20,5));
-  constant LW     : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(21,5));
-  constant SW     : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(22,5));
-  constant BEQ    : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(23,5));
-  constant BNE    : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(24,5));
-  constant BLEZ   : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(25,5));
-  constant BGTZ   : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(26,5));
-  constant BLTZ   : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(27,5));
-  constant BGEZ   : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(28,5));
-  constant J      : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(29,5));
-  constant JAL    : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(30,5));
-  constant JR     : std_logic_vector(4 downto 0) := std_logic_vector(to_unsigned(31,5));
+  --OPCODES
+  constant RTYPE  : std_logic_vector(5 downto 0) := x"00";
+  constant ADDI   : std_logic_vector(5 downto 0) := x"09";
+  constant SUBI   : std_logic_vector(5 downto 0) := x"10";
+  constant ANDI   : std_logic_vector(5 downto 0) := x"0C";
+  constant ORI    : std_logic_vector(5 downto 0) := x"0D";
+  constant XORI   : std_logic_vector(5 downto 0) := x"0E";
+  constant SLTI   : std_logic_vector(5 downto 0) := x"0A";
+  constant SLTU   : std_logic_vector(5 downto 0) := x"0B";
+  constant LW     : std_logic_vector(5 downto 0) := x"23";
+  constant SW     : std_logic_vector(5 downto 0) := x"2B";
+  constant BEQ    : std_logic_vector(5 downto 0) := x"04";
+  constant BNE    : std_logic_vector(5 downto 0) := x"05";
+  constant BLEZ   : std_logic_vector(5 downto 0) := x"06";
+  constant BGTZ   : std_logic_vector(5 downto 0) := x"07";
+  constant BLTZ   : std_logic_vector(5 downto 0) := x"01";
+  constant BGEZ   : std_logic_vector(5 downto 0) := x"01";
+  constant J      : std_logic_vector(5 downto 0) := x"02";
+  constant JAL    : std_logic_vector(5 downto 0) := x"03";
   
+  --ALU Function Codes
+  constant ADDU   : std_logic_vector(5 downto 0) := x"21";
+  constant SUBU   : std_logic_vector(5 downto 0) := x"23";
+  constant MULT   : std_logic_vector(5 downto 0) := x"18";
+  constant MULTU  : std_logic_vector(5 downto 0) := x"19";
+  constant ANDU   : std_logic_vector(5 downto 0) := x"24";
+  constant ORU    : std_logic_vector(5 downto 0) := x"25";
+  constant CSRL   : std_logic_vector(5 downto 0) := x"02";
+  constant CSLL   : std_logic_vector(5 downto 0) := x"00";
+  constant CSRA   : std_logic_vector(5 downto 0) := x"03";
+  constant CSLT   : std_logic_vector(5 downto 0) := x"2A";
+  constant MFHI   : std_logic_vector(5 downto 0) := x"10";
+  constant MFLO   : std_logic_vector(5 downto 0) := x"12";
+  constant JR     : std_logic_vector(5 downto 0) := x"08";
 
 end MIPS_LIB;
