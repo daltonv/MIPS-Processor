@@ -18,6 +18,7 @@ architecture TB of memory_tb is
 	signal input1_en 	: std_logic := '0';
 	signal input2_en 	: std_logic := '0';
 	signal wren 		: std_logic := '0';
+	signal MemRead		: std_logic := '0';
 	signal address 		: std_logic_vector(31 downto 0) := (others => '0');
 	signal output 		: std_logic_vector(31 downto 0) := (others => '0');
 	signal data_in 		: std_logic_vector(31 downto 0) := (others => '0');
@@ -36,6 +37,7 @@ begin
 			input1_en => input1_en,
 			input2_en => input2_en,
 			wren => wren,
+			MemRead => MemRead,
 			address => address,
 			output => output,
 			data_in => data_in,

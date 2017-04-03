@@ -16,19 +16,21 @@ entity datapath is
 		output : out std_logic_vector(WIDTH-1 downto 0);
 
 		--controller signals
-		MemToReg			: in std_logic; --select between Ã¢â‚¬Å“Memory data registerÃ¢â‚¬Â or Ã¢â‚¬Å“ALU outputÃ¢â‚¬Â as input 
-											 --to Ã¢â‚¬Å“write dataÃ¢â‚¬Â signal.
-		RegDst			: in std_logic; --select between IR20-16 or IR15-11 as the input to the Ã¢â‚¬Å“Write RegÃ¢â‚¬Â
+		MemToReg			: in std_logic; --select between ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“Memory data registerÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â or ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ALU outputÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â as input 
+											 --to ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“write dataÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â signal.
+		RegDst			: in std_logic; --select between IR20-16 or IR15-11 as the input to the ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“Write RegÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â
 		RegWrite			: in std_logic; --enables the register file 
 		JumpAndLink 		: in std_logic; -- when asserted, $s31 will be selected as the write register.
-		PCWriteCond		: in std_logic; --enables the PC register if the Ã¢â‚¬Å“BranchÃ¢â‚¬Â signal is asserted. 
+		PCWriteCond		: in std_logic; --enables the PC register if the ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“BranchÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â signal is asserted. 
 		PCWrite 			: in std_logic; --enables the PC register.
 		IorD 			: in std_logic; --select between the PC or the ALU output as the memory address.
 		ALUSrcA			: in std_logic; --select between the PC or the A reg
-		ALUSrcB			: in std_logic_vector(2 downto 0);
+		ALUSrcB			: in std_logic_vector(1 downto 0);
 		PCSource			: in std_logic_vector(1 downto 0);
 		MemWrite	: in std_logic;
-		MemRead		: in std_logic
+		MemRead		: in std_logic;
+		IRWrite		: in std_logic;
+		ALUOp		: in std_logic_vector(1 downto 0)
 	);
 end datapath;
 
@@ -95,7 +97,7 @@ begin
 		port map (
 			clk => clk,
 			rst => rst,
-			en => '1', --should always be enabled
+			en => PC_en,
 			input => PC_in,
 			output => PC_out
 		);
@@ -157,7 +159,7 @@ begin
 		port map (
 			clk => clk,
 			rst => rst,
-			en => '1', --should always be enabled
+			en => IRWrite, --should always be enabled
 			input => ram_out,
 			output => instruction_reg_out
 		);
