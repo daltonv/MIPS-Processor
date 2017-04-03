@@ -57,22 +57,21 @@ begin
 
 	process
 	begin
-	
-        -- test 10*12 (no overflow)
-        op    <= C_MULT;
-        input1 <= conv_std_logic_vector(0, input1'length);
-        input2 <= conv_std_logic_vector(96, input2'length);
+		-- test 2+6 (no overflow)
+        op    <= C_ADD;
+        input1 <= conv_std_logic_vector(2, input1'length);
+        input2 <= conv_std_logic_vector(6, input2'length);
         wait for 40 ns;
-        assert(result_LO = conv_std_logic_vector(0, result_LO'length)) report "Error : 10*12 = " & integer'image(conv_integer(result_LO)) & " instead of 120" severity warning;
-        assert(result_HI = conv_std_logic_vector(0, result_LO'length)) report "Error : overflow incorrect for 10*12" severity warning;
+        assert(result_LO = conv_std_logic_vector(8, result_LO'length)) report "Error : 2+6 = " & integer'image(conv_integer(result_LO)) & " instead of 8" severity warning;
+        assert(result_HI = conv_std_logic_vector(0, result_LO'length)) report "Error                                   : overflow incorrect for 2+8" severity warning;
 
-         -- test 10*12 (no overflow)
-        op    <= C_MULT;
-        input1 <= conv_std_logic_vector(8388608, input1'length);
-        input2 <= conv_std_logic_vector(8388608, input2'length);
+        -- test 56-10 (no overflow)
+        op    <= C_SUB;
+        input1 <= conv_std_logic_vector(56, input1'length);
+        input2 <= conv_std_logic_vector(10, input2'length);
         wait for 40 ns;
-        assert(result_LO = conv_std_logic_vector(768, result_LO'length)) report "Error : 10*12 = " & integer'image(conv_integer(result_LO)) & " instead of 120" severity warning;
-        assert(result_HI = conv_std_logic_vector(0, result_LO'length)) report "Error : overflow incorrect for 10*12" severity warning;
+        assert(result_LO = conv_std_logic_vector(46, result_LO'length)) report "Error : 56-10 = " & integer'image(conv_integer(result_LO)) & " instead of 46" severity warning;
+        assert(result_HI = conv_std_logic_vector(0, result_LO'length)) report "Error : overflow incorrect for 56-10" severity warning;
 
         -- test 10*12 (no overflow)
         op    <= C_MULT;
@@ -81,22 +80,29 @@ begin
         wait for 40 ns;
         assert(result_LO = conv_std_logic_vector(120, result_LO'length)) report "Error : 10*12 = " & integer'image(conv_integer(result_LO)) & " instead of 120" severity warning;
         assert(result_HI = conv_std_logic_vector(0, result_LO'length)) report "Error : overflow incorrect for 10*12" severity warning;
+        
+        -- test BGTZ
+        op    <= C_BGTZ;
+        input1 <= conv_std_logic_vector(5, input1'length);
+        input2 <= conv_std_logic_vector(79, input2'length);
+        wait for 40 ns;
+        assert(branch_taken = '1') report "Error : 5>0" severity warning;
 
-        -- test 20>>2 (no overflow)
-        op    <= C_SRL;
+        -- test 20<<2 (no overflow)
+        op    <= C_SLL;
         input1 <= conv_std_logic_vector(20, input1'length);
         input2 <= conv_std_logic_vector(2, input2'length);
         wait for 40 ns;
-        assert(result_LO = conv_std_logic_vector(5, result_LO'length)) report "Error : 20<<2 = " & integer'image(conv_integer(result_LO)) & " instead of 80" severity warning;
-        assert(result_HI = conv_std_logic_vector(0, result_LO'length)) report "Error : overflow incorrect for 10<<2" severity warning;
-
-        -- test 1>>1 (no overflow)
-        op    <= C_SRL;
-        input1 <= conv_std_logic_vector(1, input1'length);
-        input2 <= conv_std_logic_vector(1, input2'length);
-        wait for 40 ns;
         assert(result_LO = conv_std_logic_vector(80, result_LO'length)) report "Error : 20<<2 = " & integer'image(conv_integer(result_LO)) & " instead of 80" severity warning;
         assert(result_HI = conv_std_logic_vector(0, result_LO'length)) report "Error : overflow incorrect for 10<<2" severity warning;
+
+         -- test 20>>2 (no overflow)
+        op    <= C_SRA;
+        input1 <= conv_std_logic_vector(-20, input1'length);
+        input2 <= conv_std_logic_vector(2, input2'length);
+        wait for 40 ns;
+        assert(result_LO = conv_std_logic_vector(-5, result_LO'length)) report "Error : -20>>2 = " & integer'image(conv_integer(result_LO)) & " instead of -5" severity warning;
+        assert(result_HI = conv_std_logic_vector(0, result_LO'length)) report "Error : overflow incorrect for -20>>2" severity warning;
 
         -- test BEQ
         op    <= C_BEQ;
@@ -105,12 +111,12 @@ begin
         wait for 40 ns;
         assert(branch_taken = '1') report "Error : 79=79" severity warning;
 
-        -- test BEQ
-        op    <= C_BEQ;
-        input1 <= conv_std_logic_vector(40, input1'length);
+        -- test BNE
+        op    <= C_BNE;
+        input1 <= conv_std_logic_vector(79, input1'length);
         input2 <= conv_std_logic_vector(90, input2'length);
         wait for 40 ns;
-        assert(branch_taken = '0') report "Error : 40 != 90" severity warning;
+        assert(branch_taken = '1') report "Error : 79 != 90" severity warning;
 
         report "FINISHED";
         wait;

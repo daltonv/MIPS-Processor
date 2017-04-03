@@ -23,7 +23,6 @@ architecture STR of memory is
 	signal hold_in	: std_logic_vector(31 downto 0);
 	signal input1_reg : std_logic_vector(31 downto 0);
 	signal input2_reg	: std_logic_vector(31 downto 0);
-	signal wren2 : std_logic;
 
 begin
 
@@ -31,8 +30,8 @@ begin
 		port map(
 			address => address(7 downto 0),
 			clock => clk,
-			data => data_in,
-			wren => wren2,
+			data => hold_in,
+			wren => wren,
 			q => hold_out
 		);
 
@@ -62,9 +61,9 @@ begin
 
 	process(clk, input1, input2, hold_out)
 	begin
+		hold_in <= (others => '0');
 		output <= (others => '0');
 		data_out <= hold_out;
-		wren2 <= wren;
 
 		if(unsigned(address) = to_unsigned(65528,address'length)) then
 			data_out <= input1_reg;
@@ -72,8 +71,9 @@ begin
 			data_out <= input2_reg;
 		elsif(unsigned(address) = to_unsigned(65532,address'length) AND wren='1') then
 			output <= data_in;
+		else 
 			data_out <= hold_out;
-			wren2 <= '0';
+			hold_in <= data_in;
 		end if;		
 	end process;
 

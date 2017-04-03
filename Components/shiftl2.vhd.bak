@@ -14,6 +14,6 @@ end shiftl2;
 architecture BHV of shiftl2 is
 begin
   
-  output <="00" & std_logic_vector(unsigned(input) sll 2);
+  output <= std_logic_vector(unsigned(input) sll 2);
 
 end BHV;

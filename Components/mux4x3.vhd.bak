@@ -20,7 +20,7 @@ begin
 
   process(in1, in2, sel)
   begin
-	 output <= (others => '0');
+  
     if (unsigned(sel) = 0) then
       output <= in1;
     elsif (unsigned(sel) = 1) then
