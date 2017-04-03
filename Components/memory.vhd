@@ -11,6 +11,7 @@ entity memory is
 		input1_en : in std_logic;
 		input2_en : in std_logic;
 		wren : in std_logic;
+		MemRead : in std_logic;
 		address : in std_logic_vector(31 downto 0);
 		output : out std_logic_vector(31 downto 0);
 		data_in : in std_logic_vector(31 downto 0);
@@ -38,6 +39,7 @@ begin
 			address => address(7 downto 0),
 			clock => clk,
 			data => data_in,
+			rden => MemRead,
 			wren => wren2,
 			q => hold_out
 		);
@@ -83,12 +85,13 @@ begin
 			output => output
 		);
 
-	process(clk, input1_reg, input2_reg, hold_out, output_en, wren, address)
+	process(clk, input1_reg, input2_reg, hold_out, output_en, wren, address, MemRead)
 	begin
 		output_en <= '0';
 		data_out <= hold_out;
 		wren2 <= wren;
 
+		--TODO find out if rden needs to work for the ports too
 		if(unsigned(address) = to_unsigned(65528,address'length)) then
 			data_out <= input1_reg;
 		elsif(unsigned(address) = to_unsigned(65532,address'length) AND wren='0') then
@@ -97,7 +100,8 @@ begin
 			output_en <= '1';
 			data_out <= hold_out;
 			wren2 <= '0';
-		end if;		
+		end if;
+
 	end process;
 
 end STR;

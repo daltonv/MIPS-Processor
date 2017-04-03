@@ -16,18 +16,19 @@ entity datapath is
 		output : out std_logic_vector(WIDTH-1 downto 0);
 
 		--controller signals
-		MemToReg			: in std_logic; --select between â€œMemory data registerâ€ or â€œALU outputâ€ as input 
-											 --to â€œwrite dataâ€ signal.
-		RegDst			: in std_logic; --select between IR20-16 or IR15-11 as the input to the â€œWrite Regâ€
+		MemToReg			: in std_logic; --select between Ã¢â‚¬Å“Memory data registerÃ¢â‚¬Â or Ã¢â‚¬Å“ALU outputÃ¢â‚¬Â as input 
+											 --to Ã¢â‚¬Å“write dataÃ¢â‚¬Â signal.
+		RegDst			: in std_logic; --select between IR20-16 or IR15-11 as the input to the Ã¢â‚¬Å“Write RegÃ¢â‚¬Â
 		RegWrite			: in std_logic; --enables the register file 
 		JumpAndLink 		: in std_logic; -- when asserted, $s31 will be selected as the write register.
-		PCWriteCond		: in std_logic; --enables the PC register if the â€œBranchâ€ signal is asserted. 
+		PCWriteCond		: in std_logic; --enables the PC register if the Ã¢â‚¬Å“BranchÃ¢â‚¬Â signal is asserted. 
 		PCWrite 			: in std_logic; --enables the PC register.
 		IorD 			: in std_logic; --select between the PC or the ALU output as the memory address.
 		ALUSrcA			: in std_logic; --select between the PC or the A reg
 		ALUSrcB			: in std_logic_vector(2 downto 0);
 		PCSource			: in std_logic_vector(1 downto 0);
-		MemWrite	: in std_logic
+		MemWrite	: in std_logic;
+		MemRead		: in std_logic
 	);
 end datapath;
 
@@ -119,6 +120,7 @@ begin
 			input1_en => input1_en,
 			input2_en => input2_en,
 			wren => MemWrite,
+			MemRead => MemRead,
 			address => mem_address,
 			output => output,
 			data_in => ram_in,
