@@ -13,15 +13,15 @@ architecture TB of memory_tb is
 	signal rst 		: std_logic;
 
 	--data inputs
-	signal input1 		: std_logic_vector(9 downto 0);
-	signal input2 		: std_logic_vector(9 downto 0);
-	signal input1_en 	: std_logic;
-	signal input2_en 	: std_logic;
-	signal wren 		: std_logic;
-	signal address 		: std_logic_vector(31 downto 0);
-	signal output 		: std_logic_vector(31 downto 0);
-	signal data_in 		: std_logic_vector(31 downto 0);
-	signal data_out 	: std_logic_vector(31 downto 0);
+	signal input1 		: std_logic_vector(9 downto 0) := (others => '0');
+	signal input2 		: std_logic_vector(9 downto 0) := (others => '0');
+	signal input1_en 	: std_logic := '0';
+	signal input2_en 	: std_logic := '0';
+	signal wren 		: std_logic := '0';
+	signal address 		: std_logic_vector(31 downto 0) := (others => '0');
+	signal output 		: std_logic_vector(31 downto 0) := (others => '0');
+	signal data_in 		: std_logic_vector(31 downto 0) := (others => '0');
+	signal data_out 	: std_logic_vector(31 downto 0) := (others => '0');
 
 	signal done		: std_logic := '0';
 
