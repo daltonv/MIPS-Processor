@@ -60,7 +60,7 @@ begin
 			output => input2_reg
 		);
 
-	process(clk, input1, input2, hold_out)
+	process(clk, input1_reg, input2_reg, hold_out, data_in, wren, address)
 	begin
 		output <= (others => '0');
 		data_out <= hold_out;

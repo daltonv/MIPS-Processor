@@ -18,7 +18,7 @@ end mux4x3;
 architecture IF_STATEMENT of mux4x3 is
 begin
 
-  process(in1, in2, sel)
+  process(in1, in2, in3, in4, sel)
   begin
 	 output <= (others => '0');
     if (unsigned(sel) = 0) then

@@ -17,7 +17,7 @@ end mux3x2;
 architecture IF_STATEMENT of mux3x2 is
 begin
 
-  process(in1, in2, sel)
+  process(in1, in2, in3, sel)
   begin
 	 output <= (others => '0');
     if (unsigned(sel) = 0) then
