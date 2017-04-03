@@ -1,6 +1,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use work.MIPS_LIB.all ;
 use ieee.numeric_std.all;
+
 
 entity controller is
 	generic (
@@ -11,15 +13,15 @@ entity controller is
 		clk	: in std_logic;
 		rst : in std_logic;
 
-		data : in std_logic_vector(4 downto 0); -- data in
+		opcode : in std_logic_vector(4 downto 0); -- opcode in
 
 		--control out signals
-		MemToReg		: out std_logic; --select between Ã¢â‚¬Å“Memory data registerÃ¢â‚¬Â or Ã¢â‚¬Å“ALU outputÃ¢â‚¬Â as input 
-											 --to Ã¢â‚¬Å“write dataÃ¢â‚¬Â signal.
-		RegDst			: out std_logic; --select between IR20-16 or IR15-11 as the input to the Ã¢â‚¬Å“Write RegÃ¢â‚¬Â
+		MemToReg		: out std_logic; --select between ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œMemory opcode registerÃƒÂ¢Ã¢â€šÂ¬Ã‚Â or ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œALU outputÃƒÂ¢Ã¢â€šÂ¬Ã‚Â as input 
+											 --to ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œwrite opcodeÃƒÂ¢Ã¢â€šÂ¬Ã‚Â signal.
+		RegDst			: out std_logic; --select between IR20-16 or IR15-11 as the input to the ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œWrite RegÃƒÂ¢Ã¢â€šÂ¬Ã‚Â
 		RegWrite		: out std_logic; --enables the register file 
 		JumpAndLink 	: out std_logic; -- when asserted, $s31 will be selected as the write register.
-		PCWriteCond		: out std_logic; --enables the PC register if the Ã¢â‚¬Å“BranchÃ¢â‚¬Â signal is asserted. 
+		PCWriteCond		: out std_logic; --enables the PC register if the ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œBranchÃƒÂ¢Ã¢â€šÂ¬Ã‚Â signal is asserted. 
 		PCWrite 		: out std_logic; --enables the PC register.
 		IorD 			: out std_logic; --select between the PC or the ALU output as the memory address.
 		ALUSrcA			: out std_logic; --select between the PC or the A reg
@@ -35,7 +37,8 @@ end controller;
 architecture FSM_2P of controller is
 	
 	--TODO add more states
-	type STATE_TYPE is (INSTR_FETCH, INSTR_DECODE);
+	type STATE_TYPE is (INSTR_FETCH, INSTR_DECODE, R_EXECUTE, R_COMPLETE,
+						MEM_COMPUTE, MEM_READ, MEM_WRITE, MEM_COMPLETE);
 	signal state, next_state : STATE_TYPE;
 
 begin
@@ -49,7 +52,7 @@ begin
 		end if;
 	end process;
 
-	process(data,state)
+	process(opcode,state)
 	begin
 		next_state <= state;
 
@@ -80,9 +83,62 @@ begin
 
 			when INSTR_DECODE =>
 				ALUSrcB <= "11";
-				
 
-			
+				if opcode = RTYPE then
+					next_state <= R_EXECUTE;
+				elsif opcode = LW OR opcode = SW then
+					next_state <= MEM_COMPUTE;
+				end if;
+
+			--RTYPE Begin
+			when R_EXECUTE =>
+				ALUSrcA <= '1'; --select reg A for alu input1
+				ALUSrcB <= "00"; --select reg B for alu input2
+				ALUOp <= "10"; --idk yet
+
+				next_state <= R_COMPLETE;
+
+			when R_COMPLETE =>
+				RegDst <= '1'; --used to select reg to write to
+				RegWrite <= '1'; --allow writing in reg file
+				MemToReg <= '0'; --use alu output as data to write to reg
+
+				next_state <= INSTR_FETCH;
+			--RTYPE End
+
+			--LW or SW Begin
+			when MEM_COMPUTE =>
+				ALUSrcA <= '1'; --select reg A for alu input1
+				ALUSrcB <= "10"; --select sign extended ir 15-0 for alu input2
+				ALUOp <= "00";
+
+				if opcode = LW then
+					next_state <= MEM_READ;
+				elsif opcode = SW then
+					next_state <= MEM_WRITE;
+				end if;
+
+			when MEM_WRITE =>
+				IorD <= '1'; --use alu output as address
+				MemWrite <= '1';
+
+				next_state <= INSTR_FETCH;
+
+			when MEM_READ =>
+				IorD <= '1'; --use alu output as address
+				MemRead <= '1';
+
+				next_state <= MEM_COMPLETE;
+
+			when MEM_COMPLETE =>
+				RegDst <= '1';
+				RegWrite <= '1';
+				MemtoReg <= '0';
+
+				next_state <= INSTR_FETCH;
+			--LW or SW End
+
+
 		end case;
 
 	end process;
