@@ -5,23 +5,19 @@ use ieee.numeric_std.all;
 
 
 entity controller is
-	generic (
-		WIDTH : positive := 32
-	);
 	port (
 		--clk and resets
 		clk	: in std_logic;
 		rst : in std_logic;
 
-		opcode : in std_logic_vector(4 downto 0); -- opcode in
+		opcode : in std_logic_vector(5 downto 0); -- opcode in
 
 		--control out signals
-		MemToReg		: out std_logic; --select between ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œMemory opcode registerÃƒÂ¢Ã¢â€šÂ¬Ã‚Â or ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œALU outputÃƒÂ¢Ã¢â€šÂ¬Ã‚Â as input 
-											 --to ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œwrite opcodeÃƒÂ¢Ã¢â€šÂ¬Ã‚Â signal.
-		RegDst			: out std_logic; --select between IR20-16 or IR15-11 as the input to the ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œWrite RegÃƒÂ¢Ã¢â€šÂ¬Ã‚Â
+		MemToReg		: out std_logic; --select between							
+		RegDst			: out std_logic; --select between IR20-16 or IR15-11 as the input to the
 		RegWrite		: out std_logic; --enables the register file 
 		JumpAndLink 	: out std_logic; -- when asserted, $s31 will be selected as the write register.
-		PCWriteCond		: out std_logic; --enables the PC register if the ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œBranchÃƒÂ¢Ã¢â€šÂ¬Ã‚Â signal is asserted. 
+		PCWriteCond		: out std_logic; --enables the PC register if the  signal is asserted. 
 		PCWrite 		: out std_logic; --enables the PC register.
 		IorD 			: out std_logic; --select between the PC or the ALU output as the memory address.
 		ALUSrcA			: out std_logic; --select between the PC or the A reg
