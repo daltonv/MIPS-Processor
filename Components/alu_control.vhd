@@ -35,6 +35,7 @@ begin
 			when "00" =>
 				OPSelect <= ADDU;
 				LO_en <= '1';
+				ALU_LO_HI <= "00";
 
 			--let the function field determine the instruction
 			when "10" =>

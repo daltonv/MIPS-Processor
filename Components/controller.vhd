@@ -33,7 +33,7 @@ end controller;
 architecture FSM_2P of controller is
 	
 	--TODO add more states
-	type STATE_TYPE is (INSTR_FETCH, INSTR_DECODE, R_EXECUTE, R_COMPLETE,
+	type STATE_TYPE is (INSTR_FETCH, FETCH_WAIT, INSTR_DECODE, R_EXECUTE, R_COMPLETE,
 						MEM_COMPUTE, MEM_READ, MEM_WRITE, MEM_COMPLETE);
 	signal state, next_state : STATE_TYPE;
 
@@ -70,12 +70,17 @@ begin
 		case state is
 			when INSTR_FETCH =>
 				MemRead <= '1';
-				IRWrite <= '1';
 				ALUSrcB <= "01"; --select constant 4
 				ALUOp <= "00"; --something with alu control
 				PCWrite <= '1'; --allow PC to be written too
 
+				next_state <= FETCH_WAIT;
+
+			when FETCH_WAIT =>
+				IRWrite <= '1';
+
 				next_state <= INSTR_DECODE;
+
 
 			when INSTR_DECODE =>
 				ALUSrcB <= "11";

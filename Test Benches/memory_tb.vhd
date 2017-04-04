@@ -61,6 +61,8 @@ begin
 		input1_en <= '1';
 		input2_en <= '1';
 
+		MemRead <= '0';
+
 		wait for 40 ns;
 
 		input1_en <= '0';
@@ -90,6 +92,7 @@ begin
 
 		wren <= '0';
 		address <= conv_std_logic_vector(4,address'length);
+		MemRead <= '1';
 
 		wait for 40 ns;
 

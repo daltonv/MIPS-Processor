@@ -91,7 +91,7 @@ begin
 		data_out <= hold_out;
 		wren2 <= wren;
 
-		--TODO find out if rden needs to work for the ports too
+		--TODO find out if rden needs to work for the ports
 		if(unsigned(address) = to_unsigned(65528,address'length)) then
 			data_out <= input1_reg;
 		elsif(unsigned(address) = to_unsigned(65532,address'length) AND wren='0') then
