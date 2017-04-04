@@ -16,12 +16,12 @@ entity datapath is
 		output : out std_logic_vector(WIDTH-1 downto 0);
 
 		--controller signals
-		MemToReg			: in std_logic; --select between ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“Memory data registerÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â or ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ALU outputÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â as input 
-											 --to ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“write dataÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â signal.
-		RegDst			: in std_logic; --select between IR20-16 or IR15-11 as the input to the ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“Write RegÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â
+		MemToReg			: in std_logic; --select between ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œMemory data registerÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â or ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œALU outputÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â as input 
+											 --to ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œwrite dataÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â signal.
+		RegDst			: in std_logic; --select between IR20-16 or IR15-11 as the input to the ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œWrite RegÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â
 		RegWrite			: in std_logic; --enables the register file 
 		JumpAndLink 		: in std_logic; -- when asserted, $s31 will be selected as the write register.
-		PCWriteCond		: in std_logic; --enables the PC register if the ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“BranchÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â signal is asserted. 
+		PCWriteCond		: in std_logic; --enables the PC register if the ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œBranchÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â signal is asserted. 
 		PCWrite 			: in std_logic; --enables the PC register.
 		IorD 			: in std_logic; --select between the PC or the ALU output as the memory address.
 		ALUSrcA			: in std_logic; --select between the PC or the A reg
@@ -62,11 +62,11 @@ architecture STR of datapath is
 	signal data_B	: std_logic_vector(31 downto 0);
 
 	--regsiter A signals
-	signal reg_A 	: std_logic_vector(31 downto 0);
+	signal reg_A 	: std_logic_vector(31 downto 0); --output of register A
 	signal alu_in1	: std_logic_vector(31 downto 0);
 
 	--regsiter Bsignals
-	signal reg_B	: std_logic_vector(31 downto 0);
+	signal reg_B	: std_logic_vector(31 downto 0); --output of register B
 	signal alu_in2	: std_logic_vector(31 downto 0);
 
 	--alu signals (including it's output registers and mux)
@@ -81,7 +81,7 @@ architecture STR of datapath is
 	signal muxA_in2 : std_logic_vector(31 downto 0);
 
 	--alu control signals
-	signal OPSelect : std_logic_vector(4 downto 0);
+	signal OPSelect : std_logic_vector(5 downto 0);
 	signal ALU_LO_HI : std_logic_vector(1 downto 0);
 	signal LO_en	: std_logic;
 	signal HI_en	: std_logic;
@@ -125,7 +125,7 @@ begin
 			MemRead => MemRead,
 			address => mem_address,
 			output => output,
-			data_in => ram_in,
+			data_in => reg_B,
 			data_out => ram_out
 		);
 
@@ -258,6 +258,19 @@ begin
 			in4 => sign_extended_data_shift,
 			sel => ALUSrcB,
 			output => alu_in2
+		);
+
+	U_ALU_CTRL : entity work.alu_control
+		generic map(
+			width => 32
+		)
+		port map(
+			ALUOp => ALUOp,
+			func => instruction_reg_out(5 downto 0),
+			OPSelect => OPSelect,
+			HI_en => HI_en,
+			LO_en => LO_en,
+			ALU_LO_HI => ALU_LO_HI
 		);
 
 	U_ALU : entity work.alu
