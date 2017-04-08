@@ -36,7 +36,7 @@ architecture FSM_2P of controller is
 	--TODO add more states
 	type STATE_TYPE is (INSTR_FETCH, INSTR_DECODE, R_EXECUTE, R_COMPLETE,
 						MEM_COMPUTE, MEM_READ, MEM_WRITE, MEM_COMPLETE, I_EXECUTE,
-						I_COMPLETE);
+						I_COMPLETE, BRANCH, JUMP);
 	signal state, next_state : STATE_TYPE;
 
 begin
@@ -90,6 +90,10 @@ begin
 					next_state <= MEM_COMPUTE;
 				elsif opcode = ADDI OR opcode = SUBI  OR opcode = ANDI OR opcode = ORI OR opcode = XORI OR opcode = SLTI OR opcode = SLTU then
 					next_state <= I_EXECUTE;
+				elsif opcode = BEQ OR opcode = BNE OR opcode = BLEZ OR opcode = BGTZ OR opcode = BLTZ then
+					next_state <= BRANCH;
+				elsif opcode = J OR opcode = JAL then
+					next_state <= JUMP;
 				end if;
 
 			--RTYPE Begin
@@ -163,6 +167,30 @@ begin
 
 				next_state <= INSTR_FETCH;
 			--ITYPE End
+
+			--Branch start
+			when BRANCH =>
+				ALUSrcA <= '1';
+				ALUSrcB <= "00";
+				ALUOp <= "01";
+				PCWriteCond <= '1';
+				PCSource <= "01";
+
+				next_state <= INSTR_FETCH;
+			--branch end
+
+			--jump start
+			when JUMP =>
+				PCWrite <= '1';
+				PCSource <= "10";
+
+				if opcode = JAL then
+					JumpAndLink <= '1';
+					RegWrite <= '1';
+				end if;
+
+				next_state <= INSTR_FETCH;
+			--jump end
 
 
 		end case;

@@ -19,7 +19,7 @@ package MIPS_LIB is
   constant BLEZ   : std_logic_vector(5 downto 0) := std_logic_vector(resize(unsigned'(x"06"),6));
   constant BGTZ   : std_logic_vector(5 downto 0) := std_logic_vector(resize(unsigned'(x"07"),6));
   constant BLTZ   : std_logic_vector(5 downto 0) := std_logic_vector(resize(unsigned'(x"01"),6));
-  constant BGEZ   : std_logic_vector(5 downto 0) := std_logic_vector(resize(unsigned'(x"01"),6));
+  constant BGEZ   : std_logic_vector(5 downto 0) := std_logic_vector(resize(unsigned'(x"08"),6)); --actually one
   constant J      : std_logic_vector(5 downto 0) := std_logic_vector(resize(unsigned'(x"02"),6));
   constant JAL    : std_logic_vector(5 downto 0) := std_logic_vector(resize(unsigned'(x"03"),6));
   

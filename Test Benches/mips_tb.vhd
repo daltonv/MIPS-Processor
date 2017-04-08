@@ -44,9 +44,11 @@ begin
 		rst 	 <= '0';
 
 		input1_en <= '1';
-		input1 <= conv_std_logic_vector(1023, input1'length);
+		input2_en <= '1';
+		input1 <= conv_std_logic_vector(6, input1'length);
+		input2 <= conv_std_logic_vector(4, input2'length);
 
-		wait for 860000 ps;
+		wait until output = conv_std_logic_vector(2, output'length);
 
 		done <= '1';
 		wait;

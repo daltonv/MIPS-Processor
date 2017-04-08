@@ -88,31 +88,31 @@ begin
 		when BEQ		=> --if $s1=$s2, PC += TARGET
 			if(unsigned(input1) = unsigned(input2)) then
 				branch_taken <= '1';
-				--result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
 			end if;
 		
 		when BNE		=> --if $s1/=$s2, PC += TARGET
 			if(unsigned(input1) /= unsigned(input2)) then
 				branch_taken <= '1';
-				--result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
 			end if;
 		
 		when BLEZ		=> --if $s1 <= 0, PC += TARGET
 			if(signed(input1) <= 0) then
 				branch_taken <= '1';
-				--result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
 			end if;
 		
 		when BGTZ		=> --if $s1 > 0, PC += TARGET
 			if(signed(input1) > 0) then
 				branch_taken <= '1';
-				--result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
 			end if;
 		
 		when BLTZ		=> --if $s1 < 0, PC += TARGET
 			if(signed(input1) < 0) then
 				branch_taken <= '1';
-				--result_LO <= std_logic_vector(unsigned(input1) + unsigned(input2));
+			end if;
+
+		when BGEZ 		=>
+			if(signed(input1) >= 0) then
+				branch_taken <= '1';
 			end if;
 		
 		--when BGEZ		=> --if $s1 >= 0, PC += TARGET

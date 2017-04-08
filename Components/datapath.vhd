@@ -278,6 +278,7 @@ begin
 			ALUOp => ALUOp,
 			func => instruction_reg_out(5 downto 0),
 			opcode => instruction_reg_out(31 downto 26),
+			branch_cmp => instruction_reg_out(20 downto 16),
 			OPSelect => OPSelect,
 			HI_en => HI_en,
 			LO_en => LO_en,

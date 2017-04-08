@@ -12,6 +12,7 @@ entity alu_control is
 		ALUOp	: in std_logic_vector(1 downto 0); -- opcode in
 		opcode  : in std_logic_vector(5 downto 0);
 		func	: in std_logic_vector(5 downto 0);
+		branch_cmp : in std_logic_vector(4 downto 0);
 
 		OPSelect : out std_logic_vector(5 downto 0);
 
@@ -24,7 +25,7 @@ end alu_control;
 
 architecture BHV of alu_control is
 begin
-	process(ALUOp, func, opcode)
+	process(ALUOp, func, opcode, branch_cmp)
 	begin
 	
 		OPSelect <= (others => '0');
@@ -45,6 +46,17 @@ begin
 					ALU_LO_HI <= "00"; 
 				end if;
 
+			--branch
+			when "01" => 
+				if(opcode = BLTZ AND unsigned(branch_cmp) = 0) then
+					OPSelect <= BLTZ;
+				elsif(opcode = BLTZ AND unsigned(branch_cmp) = 1) then
+					OPSelect <= BGEZ;
+				else
+					OPSelect <= opcode;
+				end if;
+
+
 			--let the function field determine the instruction
 			when "10" =>
 				OPSelect <= func; --send the function to the alu
@@ -54,17 +66,13 @@ begin
 					LO_en <= '1'; --load LO
 				end if;
 
-				ALU_LO_HI <= "00"; --load the alu
-
 				if func = MFHI then
-					HI_en <= '0';
 					ALU_LO_HI <= "10";
 				elsif func = MFLO then
-					LO_en <= '0';
 					ALU_LO_HI <= "01";
 				end if;
 
-			-- i type instructions
+			-- i type or branch instructions
 			when "11" => 
 				case opcode is 
 					when ADDI =>
